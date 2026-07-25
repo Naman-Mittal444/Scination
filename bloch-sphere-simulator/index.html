@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive quantum computing learning platform. Learn qubits, quantum gates, Bloch spheres, and more with hands-on simulations and games.">
+  <meta name="theme-color" content="#0a0e1a">
+  <title>Quantum Computing Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/learning.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="learn-nav">
+  <a class="nav-brand" href="#">
+    <span class="brand-icon">&#x269B;</span>
+    Quantum Hub
+  </a>
+  <ul class="nav-links">
+    <li><a href="#qubit">Qubit</a></li>
+    <li><a href="#states">States</a></li>
+    <li><a href="#bloch">Bloch Sphere</a></li>
+    <li><a href="#circuit">Circuit</a></li>
+    <li><a href="#gates">Gates</a></li>
+    <li><a href="#entanglement">Entanglement</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#games">Games</a></li>
+    <li><a href="simulator.html" class="nav-cta">Full Simulator</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <canvas id="hero-particles"></canvas>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">&#x269B; Interactive Learning</div>
+    <h1>Learn <span class="gradient-text">Quantum Computing</span> from Scratch</h1>
+    <p>Explore qubits, quantum gates, superposition, entanglement, and more through hands-on simulations, 3D visualizations, and fun games.</p>
+    <div class="hero-actions">
+      <a href="#qubit" class="btn-hero primary">Start Learning</a>
+      <a href="#games" class="btn-hero secondary">Play Games</a>
+    </div>
+  </div>
+  <div class="scroll-indicator"><span></span></div>
+</section>
+
+<!-- ===== WHAT IS A QUBIT ===== -->
+<section id="qubit">
+  <div class="fade-in">
+    <div class="section-label">&#x1F4A1; Fundamentals</div>
+    <h2 class="section-title">What is a Qubit?</h2>
+    <p class="section-desc">A <strong>classical bit</strong> is either 0 or 1. A <strong>qubit</strong> can be 0, 1, or <em>both at the same time</em> thanks to <strong>superposition</strong>. This is what makes quantum computers so powerful.</p>
+  </div>
+
+  <div class="qubit-comparison fade-in">
+    <div class="card qubit-box classical">
+      <h3>Classical Bit</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem;">Either 0 or 1, never both</p>
+      <div class="bit-display">
+        <div class="bit-cell">0</div>
+        <div class="bit-cell active">1</div>
+      </div>
+      <p style="color:var(--text-muted);font-size:0.8rem;">Click to toggle <button class="help-trigger" data-help="qubit-toggle" style="margin-left:0.5rem;">?</button></p>
+      <div class="state-list">
+        <div class="state-item">
+          <span class="state-label">States</span>
+          <span class="state-val">0 or 1</span>
+        </div>
+        <div class="state-item">
+          <span class="state-label">At once</span>
+          <span class="state-val">1 value</span>
+        </div>
+        <div class="state-item">
+          <span class="state-label">N bits</span>
+          <span class="state-val">1 of 2^N</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vs-divider">VS</div>
+
+    <div class="card qubit-box quantum">
+      <h3>Quantum Qubit</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem;">0, 1, or superposition of both</p>
+      <div class="bit-display">
+        <div class="bit-cell" style="font-size:1.2rem;">|0&#x27E9;</div>
+        <div class="bit-cell" style="font-size:1.2rem;">|1&#x27E9;</div>
+      </div>
+      <div style="text-align:center;font-size:1.5rem;color:var(--quantum-green);font-weight:800;margin:0.5rem 0;">+</div>
+      <div class="bit-display">
+        <div class="bit-cell active" style="font-size:1rem;opacity:0.6;">Both!</div>
+      </div>
+      <div class="state-list">
+        <div class="state-item">
+          <span class="state-label">States</span>
+          <span class="state-val">&alpha;|0&#x27E9; + &beta;|1&#x27E9;</span>
+        </div>
+        <div class="state-item">
+          <span class="state-label">At once</span>
+          <span class="state-val">ALL values</span>
+        </div>
+        <div class="state-item">
+          <span class="state-label">N qubits</span>
+          <span class="state-val">ALL 2^N</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Superposition Demo -->
+  <div class="superposition-demo fade-in" style="margin-top:3rem;">
+    <div class="super-state">
+      <div class="super-amplitude">&alpha; = 0.707</div>
+      <div class="super-ket ket0">|0&#x27E9;</div>
+      <div class="super-amplitude">50% chance</div>
+    </div>
+    <div class="super-plus">+</div>
+    <div class="super-state">
+      <div class="super-amplitude">&beta; = 0.707</div>
+      <div class="super-ket ket1">|1&#x27E9;</div>
+      <div class="super-amplitude">50% chance</div>
+    </div>
+    <div class="super-plus">=</div>
+    <div class="super-state">
+      <div class="super-amplitude">Superposition</div>
+      <div class="super-ket" style="color:var(--quantum-green);">&psi;&#x27E9;</div>
+      <div class="super-amplitude">Both at once!</div>
+    </div>
+  </div>
+
+  <div class="card fade-in" style="margin-top:2rem;">
+    <h3 style="margin-bottom:1rem;color:var(--accent);">The Math (Simplified)</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+      <div>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0.75rem;">
+          A qubit state is written as:
+        </p>
+        <div style="font-family:var(--font-mono);font-size:1.2rem;color:var(--quantum-cyan);background:var(--bg-tertiary);padding:1rem;border-radius:8px;text-align:center;">
+          |&psi;&#x27E9; = &alpha;|0&#x27E9; + &beta;|1&#x27E9;
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.75rem;">
+          Where |&alpha;|&sup2; + |&beta;|&sup2; = 1 (probabilities sum to 100%)
+        </p>
+      </div>
+      <div>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0.75rem;">
+          On the Bloch sphere:
+        </p>
+        <div style="font-family:var(--font-mono);font-size:1.1rem;color:var(--quantum-cyan);background:var(--bg-tertiary);padding:1rem;border-radius:8px;">
+          &alpha; = cos(&theta;/2)<br>
+          &beta; = sin(&theta;/2) &middot; e<sup>i&phi;</sup>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.75rem;">
+          &theta; = polar angle (0&deg; to 180&deg;)<br>
+          &phi; = azimuthal angle (0&deg; to 360&deg;)
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUBIT STATES ===== -->
+<section id="states">
+  <div class="fade-in">
+    <div class="section-label">&#x1F520; Interactive</div>
+    <h2 class="section-title">Qubit States Explorer <button class="help-trigger" data-help="qubit-sliders">?</button></h2>
+    <p class="section-desc">Adjust &theta; and &phi; sliders to see how the qubit state changes in real-time. Watch probabilities update instantly.</p>
+  </div>
+
+  <div class="qubit-states-grid fade-in">
+    <!-- Q0 -->
+    <div class="card qubit-card" id="q0">
+      <div class="qubit-card-header">
+        <span class="qubit-name">Q0</span>
+        <span class="qubit-ket">|&psi;&#x27E9;</span>
+      </div>
+      <div class="qubit-params">
+        <div class="param-box">
+          <div class="param-label">&alpha;</div>
+          <div class="param-value alpha-val">0.707</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">&beta;</div>
+          <div class="param-value beta-val">0.707</div>
+        </div>
+      </div>
+      <div class="prob-bars">
+        <div class="prob-row">
+          <span class="prob-label">|0&#x27E9;</span>
+          <div class="prob-bar-track">
+            <div class="prob-bar-fill zero zero-bar" style="width:50%"></div>
+          </div>
+          <span class="prob-percent zero-pct">50.0%</span>
+        </div>
+        <div class="prob-row">
+          <span class="prob-label">|1&#x27E9;</span>
+          <div class="prob-bar-track">
+            <div class="prob-bar-fill one one-bar" style="width:50%"></div>
+          </div>
+          <span class="prob-percent one-pct">50.0%</span>
+        </div>
+      </div>
+      <div class="qubit-angle-row">
+        <div class="angle-item">&theta; = <span class="angle-val theta-val">45.0&deg;</span></div>
+        <div class="angle-item">&phi; = <span class="angle-val phi-val">0.0&deg;</span></div>
+      </div>
+      <div style="margin-top:1rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+          <label style="font-size:0.8rem;color:var(--text-muted);min-width:20px;">&theta;</label>
+          <input type="range" id="q0-theta" min="0" max="180" value="45" step="1" style="flex:1;accent-color:var(--accent);">
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <label style="font-size:0.8rem;color:var(--text-muted);min-width:20px;">&phi;</label>
+          <input type="range" id="q0-phi" min="0" max="360" value="0" step="1" style="flex:1;accent-color:var(--quantum-purple);">
+        </div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="card qubit-card" id="q1">
+      <div class="qubit-card-header">
+        <span class="qubit-name">Q1</span>
+        <span class="qubit-ket">|0&#x27E9;</span>
+      </div>
+      <div class="qubit-params">
+        <div class="param-box">
+          <div class="param-label">&alpha;</div>
+          <div class="param-value alpha-val">1.000</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">&beta;</div>
+          <div class="param-value beta-val">0.000</div>
+        </div>
+      </div>
+      <div class="prob-bars">
+        <div class="prob-row">
+          <span class="prob-label">|0&#x27E9;</span>
+          <div class="prob-bar-track">
+            <div class="prob-bar-fill zero zero-bar" style="width:100%"></div>
+          </div>
+          <span class="prob-percent zero-pct">100.0%</span>
+        </div>
+        <div class="prob-row">
+          <span class="prob-label">|1&#x27E9;</span>
+          <div class="prob-bar-track">
+            <div class="prob-bar-fill one one-bar" style="width:0%"></div>
+          </div>
+          <span class="prob-percent one-pct">0.0%</span>
+        </div>
+      </div>
+      <div class="qubit-angle-row">
+        <div class="angle-item">&theta; = <span class="angle-val theta-val">0.0&deg;</span></div>
+        <div class="angle-item">&phi; = <span class="angle-val phi-val">0.0&deg;</span></div>
+      </div>
+      <div style="margin-top:1rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+          <label style="font-size:0.8rem;color:var(--text-muted);min-width:20px;">&theta;</label>
+          <input type="range" id="q1-theta" min="0" max="180" value="0" step="1" style="flex:1;accent-color:var(--accent);">
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <label style="font-size:0.8rem;color:var(--text-muted);min-width:20px;">&phi;</label>
+          <input type="range" id="q1-phi" min="0" max="360" value="0" step="1" style="flex:1;accent-color:var(--quantum-purple);">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BLOCH SPHERE ===== -->
+<section id="bloch" class="bloch-section">
+  <div class="fade-in">
+    <div class="section-label">&#x1F30D; Visualization</div>
+    <h2 class="section-title">Bloch Sphere <button class="help-trigger" data-help="bloch-presets">?</button></h2>
+    <p class="section-desc" style="margin-left:auto;margin-right:auto;">The Bloch sphere is a geometric representation of a qubit's state. Every point on the sphere corresponds to a unique quantum state.</p>
+  </div>
+
+  <div class="bloch-canvas-wrap fade-in">
+    <canvas id="bloch-canvas"></canvas>
+  </div>
+
+  <div class="bloch-controls fade-in">
+    <button class="bloch-preset-btn active" data-theta="0" data-phi="0">|0&#x27E9;</button>
+    <button class="bloch-preset-btn" data-theta="180" data-phi="0">|1&#x27E9;</button>
+    <button class="bloch-preset-btn" data-theta="90" data-phi="0">|+&#x27E9;</button>
+    <button class="bloch-preset-btn" data-theta="90" data-phi="180">|-&#x27E9;</button>
+    <button class="bloch-preset-btn" data-theta="90" data-phi="90">|i&#x27E9;</button>
+    <button class="bloch-preset-btn" data-theta="45" data-phi="0">45&deg; Mix</button>
+  </div>
+
+  <div class="card fade-in" style="max-width:700px;margin:2rem auto 0;text-align:left;">
+    <h4 style="color:var(--accent);margin-bottom:0.75rem;">Key Points</h4>
+    <ul style="color:var(--text-secondary);font-size:0.9rem;line-height:2;">
+      <li><strong>|0&#x27E9;</strong> &mdash; North pole (top). Pure state, &theta; = 0&deg;</li>
+      <li><strong>|1&#x27E9;</strong> &mdash; South pole (bottom). Pure state, &theta; = 180&deg;</li>
+      <li><strong>|+&#x27E9;</strong> &mdash; Equator (right). Equal superposition, 50/50</li>
+      <li><strong>Superposition</strong> &mdash; Any point between poles is a superposition</li>
+      <li><strong>Measurement</strong> collapses the state to either |0&#x27E9; or |1&#x27E9;</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== CIRCUIT BUILDER ===== -->
+<section id="circuit">
+  <div class="fade-in">
+    <div class="section-label">&#x26A1; Build &amp; Learn</div>
+    <h2 class="section-title">Quantum Circuit Builder <button class="help-trigger" data-help="circuit-gate-H">?</button></h2>
+    <p class="section-desc">Visualize quantum circuits with real gates. Select a preset to see famous quantum algorithms in action.</p>
+  </div>
+
+  <!-- Gate Palette -->
+  <div class="card fade-in" style="margin-bottom:2rem;">
+    <h4 style="font-size:0.9rem;color:var(--text-muted);margin-bottom:0.75rem;text-align:center;">QUANTUM GATES</h4>
+    <div class="gate-palette">
+      <button class="gate-palette-btn gate-H" title="Hadamard Gate - Creates superposition">H <span class="help-trigger" data-help="circuit-gate-H">?</span></button>
+      <button class="gate-palette-btn gate-X" title="Pauli-X Gate - Bit flip (NOT gate)">X <span class="help-trigger" data-help="circuit-gate-X">?</span></button>
+      <button class="gate-palette-btn gate-Z" title="Pauli-Z Gate - Phase flip">Z <span class="help-trigger" data-help="circuit-gate-Z">?</span></button>
+      <button class="gate-palette-btn gate-S" title="S Gate - 90-degree phase rotation">S <span class="help-trigger" data-help="circuit-gate-S">?</span></button>
+      <button class="gate-palette-btn gate-T" title="T Gate - 45-degree phase rotation">T <span class="help-trigger" data-help="circuit-gate-T">?</span></button>
+      <button class="gate-palette-btn gate-CNOT" title="CNOT Gate - Controlled NOT (entanglement)">CNOT <span class="help-trigger" data-help="circuit-gate-CNOT">?</span></button>
+    </div>
+  </div>
+
+  <!-- Circuit Visualization -->
+  <div class="circuit-visual fade-in" id="circuit-visual"></div>
+
+  <!-- Circuit Output -->
+  <div class="circuit-output fade-in" id="circuit-output"></div>
+
+  <!-- Presets -->
+  <div class="card fade-in" style="margin-top:2rem;">
+    <h4 style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1rem;text-align:center;">PRESETS</h4>
+    <div class="presets-grid">
+      <button class="preset-btn active" data-preset="bell">
+        <div class="preset-name">Bell State <span class="help-trigger" data-help="circuit-bell">?</span></div>
+        <div class="preset-desc">Entangled pair</div>
+      </button>
+      <button class="preset-btn" data-preset="ghz">
+        <div class="preset-name">GHZ State <span class="help-trigger" data-help="circuit-ghz">?</span></div>
+        <div class="preset-desc">3-qubit entanglement</div>
+      </button>
+      <button class="preset-btn" data-preset="random">
+        <div class="preset-name">Random Rotation <span class="help-trigger" data-help="circuit-random">?</span></div>
+        <div class="preset-desc">Complex superposition</div>
+      </button>
+      <button class="preset-btn" data-preset="bitflip">
+        <div class="preset-name">Bit Flip <span class="help-trigger" data-help="circuit-bitflip">?</span></div>
+        <div class="preset-desc">Returns to |0&#x27E9;</div>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUANTUM GATES REFERENCE ===== -->
+<section id="gates">
+  <div class="fade-in">
+    <div class="section-label">&#x1F4D6; Reference</div>
+    <h2 class="section-title">Quantum Gates Explained</h2>
+    <p class="section-desc">Quantum gates manipulate qubit states. Each gate rotates the qubit on the Bloch sphere in a specific way.</p>
+  </div>
+
+  <div class="gates-grid fade-in">
+    <!-- H Gate -->
+    <div class="card gate-card">
+      <div class="gate-symbol">H</div>
+      <div class="gate-name">Hadamard Gate</div>
+      <div class="gate-desc">Creates superposition. Maps |0&#x27E9; to |+&#x27E9; (equal mix of 0 and 1). The most important gate for quantum computing.</div>
+      <div class="gate-matrix">1/√2 [ 1  1 ]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ 1 -1 ]</div>
+      <div class="gate-action">
+        <strong>Rotation:</strong> 180&deg; around X+Z axis<br>
+        <strong>Effect:</strong> Creates 50/50 superposition
+      </div>
+      <button class="gate-try-btn gate-action-btn" data-gate="H">Try on Bloch Sphere &rarr;</button>
+    </div>
+
+    <!-- X Gate -->
+    <div class="card gate-card">
+      <div class="gate-symbol">X</div>
+      <div class="gate-name">Pauli-X Gate (NOT)</div>
+      <div class="gate-desc">The quantum equivalent of a classical NOT gate. Flips |0&#x27E9; to |1&#x27E9; and vice versa. A 180&deg; rotation around the X axis.</div>
+      <div class="gate-matrix">[ 0  1 ]<br>[ 1  0 ]</div>
+      <div class="gate-action">
+        <strong>Rotation:</strong> 180&deg; around X axis<br>
+        <strong>Effect:</strong> Flips the qubit
+      </div>
+      <button class="gate-try-btn gate-action-btn" data-gate="X">Try on Bloch Sphere &rarr;</button>
+    </div>
+
+    <!-- Z Gate -->
+    <div class="card gate-card">
+      <div class="gate-symbol">Z</div>
+      <div class="gate-name">Pauli-Z Gate</div>
+      <div class="gate-desc">Applies a phase flip. Leaves |0&#x27E9; unchanged but flips the sign of |1&#x27E9;. A 180&deg; rotation around the Z axis.</div>
+      <div class="gate-matrix">[ 1  0 ]<br>[ 0 -1 ]</div>
+      <div class="gate-action">
+        <strong>Rotation:</strong> 180&deg; around Z axis<br>
+        <strong>Effect:</strong> Phase flip (|1&#x27E9; &rarr; -|1&#x27E9;)
+      </div>
+      <button class="gate-try-btn gate-action-btn" data-gate="Z">Try on Bloch Sphere &rarr;</button>
+    </div>
+
+    <!-- CNOT Gate -->
+    <div class="card gate-card">
+      <div class="gate-symbol">CX</div>
+      <div class="gate-name">CNOT Gate</div>
+      <div class="gate-desc">The "Controlled NOT" gate. Flips the target qubit only when the control qubit is |1&#x27E9;. Essential for creating entanglement.</div>
+      <div class="gate-matrix">[ 1 0 0 0 ]<br>[ 0 1 0 0 ]<br>[ 0 0 0 1 ]<br>[ 0 0 1 0 ]</div>
+      <div class="gate-action">
+        <strong>Type:</strong> Two-qubit gate<br>
+        <strong>Effect:</strong> Creates entanglement between qubits
+      </div>
+      <button class="gate-try-btn" onclick="alert('CNOT operates on two qubits. Try it in the Circuit Builder!')">Try in Circuit &rarr;</button>
+    </div>
+
+    <!-- S Gate -->
+    <div class="card gate-card">
+      <div class="gate-symbol">S</div>
+      <div class="gate-name">S Gate (√Z)</div>
+      <div class="gate-desc">A 90&deg; rotation around the Z axis. Also called the "phase gate". It applies a quarter-turn phase shift.</div>
+      <div class="gate-matrix">[ 1  0 ]<br>[ 0  i ]</div>
+      <div class="gate-action">
+        <strong>Rotation:</strong> 90&deg; around Z axis<br>
+        <strong>Effect:</strong> Quarter-turn phase shift
+      </div>
+      <button class="gate-try-btn gate-action-btn" data-gate="S">Try on Bloch Sphere &rarr;</button>
+    </div>
+
+    <!-- T Gate -->
+    <div class="card gate-card">
+      <div class="gate-symbol">T</div>
+      <div class="gate-name">T Gate (√S)</div>
+      <div class="gate-desc">A 45&deg; rotation around the Z axis. Also called the "π/8 gate". Used extensively in quantum error correction.</div>
+      <div class="gate-matrix">[ 1    0   ]<br>[ 0  e<sup>iπ/4</sup> ]</div>
+      <div class="gate-action">
+        <strong>Rotation:</strong> 45&deg; around Z axis<br>
+        <strong>Effect:</strong> Eighth-turn phase shift
+      </div>
+      <button class="gate-try-btn gate-action-btn" data-gate="T">Try on Bloch Sphere &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Interactive Bloch Sphere for Gate Testing -->
+  <div class="card fade-in" style="margin-top:3rem;text-align:center;">
+    <h3 style="color:var(--accent);margin-bottom:0.5rem;">Try Gates on the Bloch Sphere <button class="help-trigger" data-help="gate-try">?</button></h3>
+    <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem;">Click "Try on Bloch Sphere" above or use the buttons below to apply gates and watch the state vector move.</p>
+    <div style="display:inline-block;max-width:350px;width:100%;">
+      <canvas id="interactive-bloch-canvas" style="width:100%;border-radius:12px;"></canvas>
+    </div>
+    <div id="ibm-ket0" style="font-family:var(--font-mono);color:var(--accent);margin-top:0.5rem;">|0&#x27E9; 100.0%</div>
+    <div id="ibm-ket1" style="font-family:var(--font-mono);color:var(--quantum-pink);">|1&#x27E9; 0.0%</div>
+    <div style="display:flex;gap:2rem;justify-content:center;margin:1rem 0;">
+      <div style="text-align:center;">
+        <div style="font-size:0.7rem;color:var(--text-muted);">θ</div>
+        <div id="ibm-theta" style="font-family:var(--font-mono);font-weight:700;color:var(--quantum-green);">0.0°</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.7rem;color:var(--text-muted);">φ</div>
+        <div id="ibm-phi" style="font-family:var(--font-mono);font-weight:700;color:var(--quantum-green);">0.0°</div>
+      </div>
+    </div>
+    <div style="height:8px;display:flex;gap:4px;margin:0 auto;max-width:300px;">
+      <div id="ibm-p0" style="flex:1;background:linear-gradient(90deg,var(--accent),var(--quantum-purple));border-radius:4px;width:100%;transition:width 0.5s;"></div>
+      <div id="ibm-p1" style="flex:1;background:linear-gradient(90deg,var(--quantum-pink),var(--quantum-orange));border-radius:4px;width:0%;transition:width 0.5s;"></div>
+    </div>
+    <div class="gate-palette" style="margin-top:1.5rem;">
+      <button class="gate-action-btn gate-palette-btn gate-H" data-gate="H">H <span class="help-trigger" data-help="ibm-H">?</span></button>
+      <button class="gate-action-btn gate-palette-btn gate-X" data-gate="X">X <span class="help-trigger" data-help="ibm-X">?</span></button>
+      <button class="gate-action-btn gate-palette-btn gate-Z" data-gate="Z">Z <span class="help-trigger" data-help="ibm-Z">?</span></button>
+      <button class="gate-action-btn gate-palette-btn gate-S" data-gate="S">S <span class="help-trigger" data-help="ibm-S">?</span></button>
+      <button class="gate-action-btn gate-palette-btn gate-T" data-gate="T">T <span class="help-trigger" data-help="ibm-T">?</span></button>
+      <button class="gate-action-btn gate-palette-btn" data-gate="|0>" style="border-color:var(--text-muted);color:var(--text-muted);">|0&#x27E9; <span class="help-trigger" data-help="ibm-reset">?</span></button>
+      <button class="gate-action-btn gate-palette-btn" data-gate="|+>" style="border-color:var(--quantum-green);color:var(--quantum-green);">|+&#x27E9; <span class="help-trigger" data-help="ibm-plus">?</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ENTANGLEMENT ===== -->
+<section id="entanglement">
+  <div class="fade-in">
+    <div class="section-label">&#x1F517; Deep Dive</div>
+    <h2 class="section-title">Quantum Entanglement</h2>
+    <p class="section-desc">Entanglement is a quantum phenomenon where two or more particles become correlated in such a way that the quantum state of each particle cannot be described independently &mdash; even when separated by large distances.</p>
+  </div>
+
+  <div class="card fade-in" style="max-width:800px;margin:2rem auto;text-align:center;">
+    <blockquote style="font-style:italic;color:var(--quantum-purple);font-size:1.1rem;line-height:1.8;padding:1rem 2rem;border-left:4px solid var(--quantum-purple);">
+      &ldquo;I would not call [entanglement] one but rather <em>the</em> characteristic trait of quantum mechanics.&rdquo;
+      <div style="font-style:normal;font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">&mdash; Erwin Schr&ouml;dinger, 1935</div>
+    </blockquote>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem;">
+    <div class="card fade-in" style="border-left:4px solid var(--quantum-orange);">
+      <h3 style="color:var(--quantum-orange);font-size:1.1rem;margin-bottom:0.75rem;">EPR Paradox</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;">
+        In 1935, Einstein, Podolsky, and Rosen published a thought experiment arguing that quantum mechanics must be incomplete. They proposed that &ldquo;hidden variables&rdquo; must exist to explain the correlations between entangled particles, since the alternative &mdash; instantaneous influence across any distance &mdash; seemed impossible.
+      </p>
+    </div>
+    <div class="card fade-in" style="border-left:4px solid var(--quantum-cyan);">
+      <h3 style="color:var(--quantum-cyan);font-size:1.1rem;margin-bottom:0.75rem;">Bell&rsquo;s Theorem</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;">
+        In 1964, John Bell proved that no theory of local hidden variables can reproduce all the predictions of quantum mechanics. Bell inequalities provide an experimental test: if violated, entanglement is real and nature is genuinely non-local. Decades of experiments have confirmed Bell inequality violations, ruling out local hidden variable theories.
+      </p>
+    </div>
+    <div class="card fade-in" style="border-left:4px solid var(--quantum-green);">
+      <h3 style="color:var(--quantum-green);font-size:1.1rem;margin-bottom:0.75rem;">Spooky Action at a Distance</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;">
+        Einstein famously derided entanglement as &ldquo;spooky action at a distance.&rdquo; When two entangled qubits are measured, the result of one instantly determines the other, regardless of the distance between them. However, this does <strong>not</strong> allow faster-than-light communication &mdash; the <em>no-communication theorem</em> guarantees that entanglement alone cannot transmit information, preserving relativity.
+      </p>
+    </div>
+  </div>
+
+  <div class="card fade-in" style="max-width:700px;margin:2rem auto;text-align:center;border:1px solid var(--quantum-purple);">
+    <h4 style="color:var(--quantum-purple);margin-bottom:0.75rem;">2022 Nobel Prize in Physics</h4>
+    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;">
+      Alain Aspect, John F. Clauser, and Anton Zeilinger were awarded the Nobel Prize for their experiments with entangled photons, establishing the violation of Bell inequalities and pioneering quantum information science. Their work proved that entanglement is a real, measurable phenomenon &mdash; not just a theoretical curiosity.
+    </p>
+  </div>
+</section>
+
+<!-- ===== HISTORY OF QUANTUM COMPUTING ===== -->
+<section id="history">
+  <div class="fade-in">
+    <div class="section-label">&#x1F4DA; Milestones</div>
+    <h2 class="section-title">History of Quantum Computing</h2>
+    <p class="section-desc">From early theoretical proposals to modern quantum processors, the journey of quantum computing spans over four decades of breakthroughs.</p>
+  </div>
+
+  <div class="history-timeline fade-in" style="position:relative;max-width:800px;margin:3rem auto;padding:2rem 0;">
+    <div style="position:absolute;left:50%;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--accent),var(--quantum-purple),var(--quantum-cyan),var(--quantum-green));transform:translateX(-50%);border-radius:2px;"></div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-left:calc(50% + 30px);">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--accent);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-left:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--accent);margin-bottom:0.25rem;">1980</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Quantum Turing Machine</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Paul Benioff introduces the concept of a quantum Turing machine, providing the first rigorous description of a quantum mechanical model of computation.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-right:calc(50% + 30px);text-align:right;">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-purple);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-right:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-purple);margin-bottom:0.25rem;">1982</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Feynman&rsquo;s Proposal</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Richard Feynman proposes that a quantum computer could efficiently simulate quantum physics &mdash; something classical computers struggle with exponentially.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-left:calc(50% + 30px);">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-cyan);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-left:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-cyan);margin-bottom:0.25rem;">1984</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Quantum Key Distribution</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Charles Bennett and Gilles Brassard propose the BB84 protocol, demonstrating that quantum mechanics can be used for secure communication via quantum key distribution.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-right:calc(50% + 30px);text-align:right;">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-green);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-right:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-green);margin-bottom:0.25rem;">1985</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Universal Quantum Computer</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">David Deutsch describes a universal quantum computer that can simulate any physical process, establishing the theoretical foundation for quantum computing.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-left:calc(50% + 30px);">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-pink);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-left:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-pink);margin-bottom:0.25rem;">1993</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Quantum Teleportation</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Charles Bennett and collaborators propose the quantum teleportation protocol, showing how an unknown quantum state can be transmitted using entanglement and classical communication.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-right:calc(50% + 30px);text-align:right;">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-orange);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-right:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-orange);margin-bottom:0.25rem;">1994</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Shor&rsquo;s Algorithm</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Peter Shor develops a polynomial-time algorithm for factoring large integers on a quantum computer, threatening modern RSA encryption and proving quantum computers&rsquo; practical advantage.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-left:calc(50% + 30px);">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--accent);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-left:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--accent);margin-bottom:0.25rem;">1996</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Grover&rsquo;s Search Algorithm</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Lov Grover develops a quantum search algorithm that provides a quadratic speedup for unstructured search problems &mdash; finding an item in an unsorted database in &radic;N steps instead of N.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-right:calc(50% + 30px);text-align:right;">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-purple);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-right:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-purple);margin-bottom:0.25rem;">1998</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">First 2-Qubit Quantum Computer</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Researchers demonstrate the first experimental 2-qubit quantum computer using nuclear magnetic resonance, performing simple quantum algorithms in a physical system.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-left:calc(50% + 30px);">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-cyan);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-left:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-cyan);margin-bottom:0.25rem;">2019</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Quantum Supremacy</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Google claims quantum supremacy with their 54-qubit Sycamore processor, performing a specific computation in 200 seconds that would take the world&rsquo;s fastest supercomputer approximately 10,000 years.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:3rem;padding-right:calc(50% + 30px);text-align:right;">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-green);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-right:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-green);margin-bottom:0.25rem;">2022</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Nobel Prize in Physics</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Alain Aspect, John F. Clauser, and Anton Zeilinger receive the Nobel Prize for pioneering experiments with entangled photons, establishing the violation of Bell inequalities and advancing quantum information science.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in" style="position:relative;margin-bottom:1rem;padding-left:calc(50% + 30px);">
+      <div style="position:absolute;left:50%;top:5px;width:16px;height:16px;background:var(--quantum-orange);border-radius:50%;transform:translateX(-50%);border:3px solid var(--bg-primary);z-index:1;"></div>
+      <div class="card" style="margin-left:0;">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--quantum-orange);margin-bottom:0.25rem;">2024</div>
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem;">Willow Error Correction</h4>
+        <p style="color:var(--text-secondary);font-size:0.85rem;">Google&rsquo;s Willow quantum chip achieves below-threshold quantum error correction, demonstrating that adding more qubits can actually reduce error rates &mdash; a critical milestone for building fault-tolerant quantum computers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GAMES ===== -->
+<section id="games">
+  <div class="fade-in">
+    <div class="section-label">&#x1F3AE; Interactive Games</div>
+    <h2 class="section-title">Quantum Games &amp; Demos</h2>
+    <p class="section-desc">Experience the power of quantum computing through interactive games. See how quantum parallelism beats classical computation.</p>
+  </div>
+
+  <div class="games-grid fade-in">
+    <!-- Maze Game -->
+    <div class="card game-card">
+      <h3 style="color:var(--accent);">Quantum Maze Explorer</h3>
+      <div class="game-desc">Watch a quantum computer explore ALL maze paths simultaneously while a classical computer checks one path at a time. The quantum computer finds the exit faster!</div>
+      <div class="maze-container">
+        <canvas id="maze-canvas" class="maze-canvas"></canvas>
+      </div>
+      <div class="game-controls">
+        <button class="game-btn" id="maze-start">Start Race</button><span class="help-trigger" data-help="maze-start">?</span>
+        <button class="game-btn" id="maze-reset">New Maze</button><span class="help-trigger" data-help="maze-reset">?</span>
+      </div>
+      <div class="game-stats">
+        <div class="stat-item">
+          <span class="stat-label">Classical:</span>
+          <span class="stat-value" id="classical-steps">0</span>
+          <span class="stat-label">steps</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Quantum:</span>
+          <span class="stat-value" id="quantum-steps">0</span>
+          <span class="stat-label">steps</span>
+        </div>
+      </div>
+      <div style="margin-top:1rem;font-size:0.8rem;color:var(--text-muted);">
+        <span style="color:var(--quantum-orange);">&#x25CF;</span> Classical &nbsp;
+        <span style="color:var(--accent);">&#x25CF;</span> Quantum &nbsp;
+        <span style="color:var(--quantum-green);">&#x2605;</span> Goal
+      </div>
+    </div>
+
+    <!-- Pattern Game -->
+    <div class="card game-card">
+      <h3 style="color:var(--quantum-purple);">Quantum Pattern Memory</h3>
+      <div class="game-desc">Remember the pattern shown by quantum superposition! In quantum mode, more cells light up at once (superposition of states). Classical mode shows fewer cells.</div>
+      <div style="text-align:center;margin:1.5rem 0;">
+        <div class="tab-nav" style="display:inline-flex;">
+          <button class="tab-btn active" onclick="document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');if(patternGame){patternGame.quantumMode=true;patternGame.start();}">Quantum (4 cells)</button><span class="help-trigger" data-help="pattern-quantum">?</span>
+          <button class="tab-btn" onclick="document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');if(patternGame){patternGame.quantumMode=false;patternGame.start();}">Classical (2 cells)</button><span class="help-trigger" data-help="pattern-classical">?</span>
+        </div>
+      </div>
+      <div id="pattern-grid" class="pattern-grid"></div>
+      <div class="game-controls" style="justify-content:center;margin-top:1.5rem;">
+        <button class="game-btn" id="pattern-start">New Round</button><span class="help-trigger" data-help="pattern-start">?</span>
+      </div>
+      <div class="game-stats" style="justify-content:center;">
+        <div class="stat-item">
+          <span class="stat-label">Score:</span>
+          <span class="stat-value" id="pattern-score">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Round:</span>
+          <span class="stat-value" id="pattern-round">0</span>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-top:1rem;">Quantum mode: 2 pts per correct pattern</p>
+    </div>
+  </div>
+
+  <!-- Parallel Computation Demo -->
+  <div class="card fade-in parallel-demo" style="margin-top:2rem;">
+    <h3 style="color:var(--accent);text-align:center;margin-bottom:0.5rem;">Parallel Computation</h3>
+    <p style="text-align:center;color:var(--text-secondary);font-size:0.9rem;margin-bottom:2rem;">
+      A classical computer checks paths one at a time. A quantum computer checks ALL paths simultaneously.
+    </p>
+
+    <div class="parallel-comparison">
+      <div class="card parallel-box classical">
+        <h4>Classical Computer</h4>
+        <p style="font-size:0.8rem;color:var(--text-muted);">Processes one path at a time</p>
+        <div class="parallel-paths" id="classical-paths">
+          <div class="parallel-path"><span class="path-label">P1</span><div class="path-bar"><div class="path-fill" id="classical-path-0" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P2</span><div class="path-bar"><div class="path-fill" id="classical-path-1" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P3</span><div class="path-bar"><div class="path-fill" id="classical-path-2" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P4</span><div class="path-bar"><div class="path-fill" id="classical-path-3" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P5</span><div class="path-bar"><div class="path-fill" id="classical-path-4" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P6</span><div class="path-bar"><div class="path-fill" id="classical-path-5" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P7</span><div class="path-bar"><div class="path-fill" id="classical-path-6" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P8</span><div class="path-bar"><div class="path-fill" id="classical-path-7" style="width:0%"></div></div><span class="path-time">...</span></div>
+        </div>
+      </div>
+
+      <div class="card parallel-box quantum">
+        <h4>Quantum Computer</h4>
+        <p style="font-size:0.8rem;color:var(--text-muted);">Processes ALL paths simultaneously</p>
+        <div class="parallel-paths" id="quantum-paths">
+          <div class="parallel-path"><span class="path-label">P1</span><div class="path-bar"><div class="path-fill" id="quantum-path-0" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P2</span><div class="path-bar"><div class="path-fill" id="quantum-path-1" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P3</span><div class="path-bar"><div class="path-fill" id="quantum-path-2" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P4</span><div class="path-bar"><div class="path-fill" id="quantum-path-3" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P5</span><div class="path-bar"><div class="path-fill" id="quantum-path-4" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P6</span><div class="path-bar"><div class="path-fill" id="quantum-path-5" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P7</span><div class="path-bar"><div class="path-fill" id="quantum-path-6" style="width:0%"></div></div><span class="path-time">...</span></div>
+          <div class="parallel-path"><span class="path-label">P8</span><div class="path-bar"><div class="path-fill" id="quantum-path-7" style="width:0%"></div></div><span class="path-time">...</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="parallel-timer">
+      <div class="timer-box classical">
+        <div class="timer-label">Classical Done</div>
+        <div class="timer-value" id="parallel-classical-timer">0/8</div>
+      </div>
+      <div class="timer-box quantum">
+        <div class="timer-label">Quantum Done</div>
+        <div class="timer-value" id="parallel-quantum-timer">0/8</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button class="game-btn" id="parallel-start" style="padding:0.8rem 2rem;font-size:1rem;">Run Simulation</button><span class="help-trigger" data-help="parallel-start">?</span>
+    </div>
+  </div>
+
+  <!-- Quantum Coin Flip -->
+  <div class="card game-card" style="margin-top:2rem;">
+    <h3 style="color:var(--quantum-cyan);">Quantum Coin Flip</h3>
+    <div class="game-desc">Explore quantum measurement! The coin exists in superposition until you measure it. Adjust theta to bias the probability, then flip and measure to see the collapse.</div>
+    <div class="coin-container">
+      <canvas id="coin-canvas" class="coin-canvas"></canvas>
+    </div>
+    <div style="text-align:center;margin:1rem 0;">
+      <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem;">Adjust &theta; (probability bias)</div>
+      <input type="range" id="coin-theta" min="0" max="180" value="90" style="width:80%;accent-color:var(--quantum-cyan);"><span class="help-trigger" data-help="coin-theta">?</span>
+      <div style="font-family:var(--font-mono);color:var(--quantum-cyan);margin-top:0.25rem;">&theta; = <span id="coin-theta-val">90</span>&deg;</div>
+    </div>
+    <div class="game-controls" style="justify-content:center;">
+      <button class="game-btn" id="coin-flip-btn" style="border-color:var(--quantum-cyan);color:var(--quantum-cyan);">Flip (Superposition)</button><span class="help-trigger" data-help="coin-flip">?</span>
+      <button class="game-btn" id="coin-measure-btn" style="border-color:var(--quantum-orange);color:var(--quantum-orange);">Measure</button><span class="help-trigger" data-help="coin-measure">?</span>
+    </div>
+    <div class="game-stats" style="justify-content:center;margin-top:1rem;">
+      <div class="stat-item"><span class="stat-label">Flips:</span><span class="stat-value" id="coin-total">0</span></div>
+      <div class="stat-item"><span class="stat-label">Heads:</span><span class="stat-value" id="coin-heads">0</span></div>
+      <div class="stat-item"><span class="stat-label">Tails:</span><span class="stat-value" id="coin-tails">0</span></div>
+    </div>
+    <div style="max-width:300px;margin:1rem auto 0;">
+      <div style="display:flex;height:20px;border-radius:10px;overflow:hidden;">
+        <div id="coin-heads-bar" style="width:50%;background:linear-gradient(90deg,var(--accent),var(--quantum-purple));transition:width 0.3s;"></div>
+        <div id="coin-tails-bar" style="width:50%;background:linear-gradient(90deg,var(--quantum-pink),var(--quantum-orange));transition:width 0.3s;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-family:var(--font-mono);margin-top:0.25rem;">
+        <span id="coin-heads-pct" style="color:var(--accent);">50%</span>
+        <span id="coin-tails-pct" style="color:var(--quantum-pink);">50%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entanglement Lab -->
+  <div class="card game-card" style="margin-top:2rem;">
+    <h3 style="color:var(--quantum-purple);">Entanglement Lab</h3>
+    <div class="game-desc">Create an entangled Bell pair! Adjust Q0's state, entangle the qubits, then measure to see the "spooky" correlation — measuring one instantly determines the other.</div>
+    <div class="entangle-container">
+      <canvas id="entangle-canvas" class="entangle-canvas"></canvas>
+    </div>
+    <div style="display:flex;gap:1rem;justify-content:center;margin:1rem 0;">
+      <div style="text-align:center;">
+        <div style="font-size:0.75rem;color:var(--text-muted);">Q0 &theta;</div>
+        <input type="range" id="entangle-theta" min="0" max="180" value="90" style="width:120px;accent-color:var(--quantum-purple);"><span class="help-trigger" data-help="entangle-theta">?</span>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.75rem;color:var(--text-muted);">Q0 &phi;</div>
+        <input type="range" id="entangle-phi" min="0" max="360" value="0" style="width:120px;accent-color:var(--accent);">
+      </div>
+    </div>
+    <div class="game-controls" style="justify-content:center;">
+      <button class="game-btn" id="entangle-btn" style="border-color:var(--quantum-purple);color:var(--quantum-purple);">Entangle (Bell State)</button><span class="help-trigger" data-help="entangle-btn">?</span>
+      <button class="game-btn" id="entangle-measure-btn" style="border-color:var(--quantum-green);color:var(--quantum-green);">Measure Both</button><span class="help-trigger" data-help="entangle-measure">?</span>
+    </div>
+    <div id="entangle-result" style="text-align:center;font-family:var(--font-mono);color:var(--quantum-green);margin-top:1rem;min-height:2rem;"></div>
+    <div id="entangle-history" style="max-height:120px;overflow-y:auto;font-size:0.75rem;color:var(--text-muted);margin-top:0.5rem;"></div>
+  </div>
+
+  <!-- REMOVED: Grover's Search -->
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="learn-footer">
+  <p>Quantum Computing Learning Hub &mdash; Built for curious minds.</p>
+  <p style="margin-top:0.5rem;">Explore entanglement, quantum computing history, and play interactive games &mdash; all in one place. History sourced from <a href="https://en.wikipedia.org/wiki/Quantum_computing" target="_blank" rel="noopener">Wikipedia</a>.</p>
+  <p style="margin-top:0.5rem;">Want the full simulator? <a href="simulator.html">Open Bloch Sphere Simulator &rarr;</a></p>
+</footer>
+
+<script src="js/learning.js"></script>
+</body>
+</html>
