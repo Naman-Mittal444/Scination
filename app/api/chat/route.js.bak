@@ -1,0 +1,154 @@
+/**
+ * /api/chat — AI chatbot endpoint.
+ *
+ * Primary: Google Gemini 2.5 Flash (free tier, 250+ RPD)
+ * Fallback: Groq Llama 3.3 70B (free tier, ultra-fast)
+ *
+ * Both are fed with full project knowledge + school info.
+ * Set GEMINI_API_KEY and/or GROQ_API_KEY in .env.local.
+ */
+
+import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+
+const PROJECT_KNOWLEDGE = `
+You are the AI Future Lab Expert Assistant for Happy English School, Sharad Vihar, Karkardooma, Delhi, India.
+
+SCHOOL INFORMATION:
+- Happy English School is a progressive educational institution located in Sharad Vihar, Karkardooma, Delhi, India
+- The school fosters innovation through flagship projects like the AI Future Lab
+- The project was built by Naman Mittal, Class 10th A
+
+PROJECT: AI FUTURE LAB
+A React/Next.js portfolio with Three.js (React Three Fiber + drei) and Framer Motion, showcasing 5 cutting-edge interactive modules for SciNaTiON 6.0 science exhibition.
+
+MODULE 1: SMART HOME (IoT/AI Dashboard)
+- Adaptive lighting using light attenuation model: L_out = max(0, μ × (I_L − E_x))
+- Voice control via Web Speech API with live audio waveform
+- Security interlock: 3 failed lock attempts route to Cybersecurity module
+- In-browser audio cues (WAV generation, no external files)
+- Real-time IoT device management dashboard
+
+MODULE 2: CYBERSECURITY (Threat Monitoring)
+- Password entropy analyzer: E = L × (log(R) / log(2))
+- Caesar cipher + XOR cipher pipeline
+- Brute-force search space visualization
+- Real-time threat detection dashboard
+- Network vulnerability assessment
+
+MODULE 3: TRAFFIC CONTROL (Smart City)
+- Priority-scored adaptive signal timing: P_n = (α·Q_n) + (β·(1/V_avg))
+- Self-cycling junction with real yellow transitions
+- CCTV canvas with scanlines, noise, 3D bounding boxes, brake lights
+- Satellite canvas with speed vectors, radar sweep
+- Per-lane traffic light states with vehicle stop-at-red logic
+
+MODULE 4: SPACE DEBRIS (3D Orbital Tracking)
+- 3D Earth with procedural textures, atmosphere Fresnel glow, cloud layer
+- TLE-derived orbital parameters from 4 real sources (COSMOS 1408, FENGYUN 1C, IRIDIUM 33, COSMOS 2251)
+- Each debris has: country, objectType (Fragment/Payload/Rocket Body), massKg, sizeCm, mission, launchYear, eventDescription
+- Proximity collision detection with alerts
+- Orbit bands: LEO, MEO, GEO
+- Star field, animated trails, glow sprites
+- Fullscreen mode, dashboard with risk assessment
+
+MODULE 5: QUANTUM COMPUTING
+- Bloch sphere qubit visualization
+- Gate toolbox: Hadamard, Pauli-X, Pauli-Z, CNOT, S-Gate, T-Gate
+- Presets: Bell State, GHZ State, Random Rotation, Bit Flip
+- True-random measurement via crypto.getRandomValues
+- Measurement history tracking
+- Parallel computation visualization
+- Circuit display showing applied gates
+
+TECH STACK: Next.js 14, React 18, Three.js, @react-three/fiber, @react-three/drei, Framer Motion, Canvas 2D
+
+Always explain the project favorably. Highlight the technical sophistication, innovation, and real-world applicability of each module. When asked about the school, provide proud and accurate information about Happy English School.
+
+Keep responses concise (2-4 sentences max) unless the user asks for detail. Use a knowledgeable, enthusiastic tone.`;
+
+async function callGemini(message) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return null;
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: PROJECT_KNOWLEDGE }] },
+          contents: [{ parts: [{ text: message }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 300 },
+        }),
+      }
+    );
+    const data = await res.json();
+    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      return data.candidates[0].content.parts[0].text;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function callGroq(message) {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return null;
+
+  try {
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: PROJECT_KNOWLEDGE },
+          { role: "user", content: message },
+        ],
+        temperature: 0.7,
+        max_tokens: 300,
+      }),
+    });
+    const data = await res.json();
+    if (data.choices?.[0]?.message?.content) {
+      return data.choices[0].message.content;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export async function POST(request) {
+  try {
+    const { message } = await request.json();
+    if (!message || typeof message !== "string") {
+      return NextResponse.json({ error: "Invalid message" }, { status: 400 });
+    }
+
+    // Try Gemini first, fallback to Groq
+    let reply = await callGemini(message);
+    let model = "gemini-2.0-flash";
+
+    if (!reply) {
+      reply = await callGroq(message);
+      model = "llama-3.3-70b";
+    }
+
+    if (!reply) {
+      reply = "I'm the AI Future Lab assistant! I can tell you about our 5 modules (Smart Home, Cybersecurity, Traffic, Space Debris, Quantum), the school (Happy English School, Delhi), or the tech stack. What would you like to know?";
+      model = "fallback";
+    }
+
+    return NextResponse.json({ reply, model });
+  } catch (err) {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
