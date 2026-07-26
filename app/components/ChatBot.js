@@ -211,7 +211,7 @@ export default function ChatBot({ onNavigate, activeModule }) {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             {/* Header */}
             <div className="chatbot-header">
@@ -309,6 +309,7 @@ export default function ChatBot({ onNavigate, activeModule }) {
                 className="chatbot-send"
                 onClick={() => sendMessage()}
                 disabled={!input.trim() || isLoading}
+                aria-label="Send message"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M1.5 1.2l13 6.3-13 6.3.8-5.5L13 8l-9.7 2.5z" />

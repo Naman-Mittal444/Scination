@@ -6,8 +6,8 @@ import ModuleShell from "./ModuleShell";
 import { MODULE_BY_ID } from "../../lib/modules";
 
 const SIMULATOR_URL = "/bloch-sphere/simulator.html";
-const STANDALONE_SIMULATOR = "file:///C:/Users/taniy/pop-portfolio%20-%20Copy/bloch-sphere-simulator/simulator.html";
-const STANDALONE_LEARNING = "file:///C:/Users/taniy/pop-portfolio%20-%20Copy/bloch-sphere-simulator/index.html";
+const STANDALONE_SIMULATOR = "/bloch-sphere/simulator.html";
+const STANDALONE_LEARNING = "/bloch-sphere/index.html";
 
 const GATES_INFO = [
   { name: "Pauli-X", symbol: "X", axis: "X-axis", angle: "180°", effect: "Bit flip — swaps |0⟩ and |1⟩", matrix: "[[0,1],[1,0]]" },
@@ -66,7 +66,9 @@ export default function Quantum() {
             title="Bloch Sphere Simulator"
             style={{ width: "100%", height: "70vh", minHeight: 500, border: "none", background: "#0d1117" }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
-          />
+          >
+            <p style={{ padding: 40, color: "var(--ink-dim)", textAlign: "center" }}>Your browser does not support iframes. <a href={SIMULATOR_URL} style={{ color: "#a855f7" }}>Open the simulator directly</a>.</p>
+          </iframe>
           <div style={{ padding: "10px 14px", background: "rgba(168,85,247,0.05)", borderTop: "1px solid rgba(168,85,247,0.1)", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, color: "var(--ink-dim)" }}>
             <span>Powered by             <a href="/bloch-sphere/index.html" target="_blank" rel="noopener noreferrer"
               style={{ color: "#a855f7", textDecoration: "none" }}>Bloch Sphere Simulator</a> (MIT License)</span>
@@ -86,7 +88,9 @@ export default function Quantum() {
             src="/bloch-sphere/index.html"
             title="Quantum Computing Learning Hub"
             style={{ width: "100%", height: "75vh", minHeight: 600, border: "none", background: "#0a0e1a" }}
-          />
+          >
+            <p style={{ padding: 40, color: "var(--ink-dim)", textAlign: "center" }}>Your browser does not support iframes. <a href="/bloch-sphere/index.html" style={{ color: "#a855f7" }}>Open the learning hub directly</a>.</p>
+          </iframe>
           <div style={{ padding: "10px 14px", background: "rgba(168,85,247,0.05)", borderTop: "1px solid rgba(168,85,247,0.1)", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, color: "var(--ink-dim)" }}>
             <span>Interactive learning — qubit fundamentals, circuits, quantum games, history</span>
             <a href={STANDALONE_LEARNING} target="_blank" rel="noopener noreferrer"

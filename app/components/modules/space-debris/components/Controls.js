@@ -187,6 +187,7 @@ export function Controls({
               <button
                 onClick={() => selectObject(null)}
                 className="sd-detail-close"
+                aria-label="Close details"
               >
                 &times;
               </button>

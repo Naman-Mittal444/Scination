@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import CreditsBadge from "./components/CreditsBadge";
 import DebugPanel from "./components/DebugPanel";
@@ -9,15 +9,22 @@ import LogoPlaceholder from "./components/LogoPlaceholder";
 import Reveal from "./components/Reveal";
 import ModuleCapsule from "./components/ModuleCapsule";
 import ChatBot from "./components/ChatBot";
+import HeroPlanet from "./components/HeroPlanet";
+import KeyboardShortcuts from "./components/KeyboardShortcuts";
+import CursorTrail from "./components/CursorTrail";
+import Icon from "./components/Icon";
 import { MODULES, MODULE_BY_ID, HUB_ACCENT } from "./lib/modules";
 
-// WebGL must not run on the server.
+const CinematicIntro = dynamic(() => import("./components/CinematicIntro"), {
+  ssr: false,
+  loading: () => null,
+});
+
 const Scene3D = dynamic(() => import("./components/Scene3D"), {
   ssr: false,
   loading: () => null,
 });
 
-// Module bodies contain R3F canvases → client-only, no SSR.
 const MODULE_COMPONENTS = {
   "smart-home": dynamic(() => import("./components/modules/SmartHome"), { ssr: false }),
   cybersecurity: dynamic(() => import("./components/modules/Cybersecurity"), { ssr: false }),
@@ -34,27 +41,43 @@ const container = {
 
 export default function Page() {
   const heroRef = useRef(null);
-  const [active, setActive] = useState(null); // launched module id
+  const [active, setActive] = useState(null);
   const [hoverAccent, setHoverAccent] = useState(null);
-  const [reason, setReason] = useState(null); // interlock message
+  const [reason, setReason] = useState(null);
+  const [introComplete, setIntroComplete] = useState(false);
+  const [visited, setVisited] = useState([]);
+
+  // Load visited modules from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("ailab-visited");
+      if (stored) setVisited(JSON.parse(stored));
+    } catch {}
+  }, []);
+
+  // Mark a module as visited when launched
+  const launch = useCallback((id) => {
+    setReason(null);
+    setActive(id);
+    window.scrollTo({ top: 0, behavior: "auto" });
+    setVisited((prev) => {
+      if (prev.includes(id)) return prev;
+      const next = [...prev, id];
+      try { localStorage.setItem("ailab-visited", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
 
   const activeModule = active ? MODULE_BY_ID[active] : null;
   const accent = hoverAccent || activeModule?.accent || HUB_ACCENT;
   const accentSoft = activeModule?.accentSoft || "#2a1147";
 
-  // Drive the global accent CSS vars + body mood wash.
   useEffect(() => {
     document.documentElement.style.setProperty("--accent", accent);
     document.documentElement.style.setProperty("--accent-soft", accentSoft);
     if (active) document.body.setAttribute("data-accent-soft", "");
     else document.body.removeAttribute("data-accent-soft");
   }, [accent, accentSoft, active]);
-
-  function launch(id) {
-    setReason(null);
-    setActive(id);
-    window.scrollTo({ top: 0, behavior: "auto" });
-  }
 
   function navigate(id, why) {
     setReason(why || "Security escalation");
@@ -67,7 +90,6 @@ export default function Page() {
     setReason(null);
   }
 
-  // ChatBot can trigger module navigation via custom event
   useEffect(() => {
     function handleNavEvent(e) {
       const moduleId = e.detail?.moduleId;
@@ -87,17 +109,21 @@ export default function Page() {
     <main>
       <LogoPlaceholder />
       <CreditsBadge />
-      <DebugPanel />
+      {process.env.NODE_ENV === 'development' && <DebugPanel />}
       <ChatBot onNavigate={(id) => launch(id)} activeModule={active} />
+      <KeyboardShortcuts onLaunch={launch} onReturn={() => { setActive(null); setReason(null); }} active={active} />
+      <CursorTrail accent={accent} />
 
-      {/* Persistent 3D particle field behind everything */}
       <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
         <Scene3D accent={accent} />
       </div>
 
+      {!introComplete && (
+        <CinematicIntro onComplete={() => setIntroComplete(true)} />
+      )}
+
       <AnimatePresence mode="wait">
         {active ? (
-          /* ===================== LAUNCHED MODULE ===================== */
           <motion.section
             key={active}
             initial={{ opacity: 0, scale: 0.98 }}
@@ -107,63 +133,71 @@ export default function Page() {
             style={{ position: "relative", zIndex: 2, minHeight: "100svh", padding: "clamp(80px, 12vh, 130px) 0 100px" }}
           >
             <div style={container}>
-              <motion.button
-                onClick={returnToHub}
-                whileHover={{ x: -4 }}
-                className="btn btn-ghost"
-                style={{ marginBottom: 30 }}
-              >
+              <motion.button onClick={returnToHub} whileHover={{ x: -4 }} className="btn btn-ghost" style={{ marginBottom: 30 }}>
                 ← Return to Hub
               </motion.button>
               {ActiveComp && (
-                <ActiveComp
-                  onNavigate={(id) => navigate(id, "Brute-force lockout — re-authenticate")}
-                  reason={reason}
-                />
+                <ActiveComp onNavigate={(id) => navigate(id, "Brute-force lockout — re-authenticate")} reason={reason} />
               )}
             </div>
           </motion.section>
         ) : (
-          /* ===================== HUB ===================== */
           <motion.div
             key="hub"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ position: "relative", zIndex: 1 }}
           >
-            {/* HERO */}
             <section
               ref={heroRef}
-              style={{ position: "relative", minHeight: "100svh", display: "grid", placeItems: "center", overflow: "hidden" }}
+              style={{ position: "relative", minHeight: "100svh", display: "flex", flexDirection: "column", justifyContent: "center", overflow: "hidden" }}
             >
               <motion.div
-                style={{
-                  position: "relative", zIndex: 1, textAlign: "center", padding: "0 20px",
-                  y: copyY, opacity: copyOpacity, willChange: "transform, opacity", pointerEvents: "none",
-                }}
+                className="hero-layout"
+                style={{ y: copyY, opacity: copyOpacity, willChange: "transform, opacity" }}
               >
-                <motion.p
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                  className="chip" style={{ pointerEvents: "auto" }}
-                >
-                  SciNaTiON 6.0 · Science Exhibition
-                </motion.p>
-                <h1 className="gradient-text accent-glow" style={{ fontSize: "clamp(52px, 13vw, 172px)", fontWeight: 800, marginTop: 22 }}>
-                  AI FUTURE
-                  <br />
-                  LAB
-                </h1>
-                <motion.p
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-                  style={{ marginTop: 22, fontSize: "clamp(15px, 2vw, 21px)", color: "var(--ink-dim)", maxWidth: 620, marginInline: "auto" }}
-                >
-                  Five interactive AI systems — smart homes, cybersecurity, traffic,
-                  space and quantum computing — engineered by{" "}
-                  <strong style={{ color: "var(--ink)" }}>Naman Mittal</strong>. Explore each one in 3D.
-                </motion.p>
+                <div className="hero-left">
+                  <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="chip">
+                    SciNaTiON 6.0 · Science Exhibition
+                  </motion.p>
+                  <h1 className="gradient-text accent-glow" style={{ fontSize: "clamp(52px, 13vw, 172px)", fontWeight: 800, marginTop: 22 }}>
+                    AI FUTURE<br />LAB
+                  </h1>
+                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} style={{ marginTop: 22, fontSize: "clamp(15px, 2vw, 21px)", color: "var(--ink-dim)", maxWidth: 620 }}>
+                    Five interactive AI systems — smart homes, cybersecurity, traffic,
+                    space and quantum computing — engineered by{" "}
+                    <strong style={{ color: "var(--ink)" }}>Naman Mittal</strong>. Explore each one in 3D.
+                  </motion.p>
+                  <div className="hero-cta-row">
+                    <button className="btn btn-hero btn-hero-primary" onClick={() => document.getElementById("modules")?.scrollIntoView({ behavior: "smooth" })}>
+                      Explore Modules
+                    </button>
+                    <button className="btn btn-hero btn-hero-ghost" onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}>
+                      About the Creator
+                    </button>
+                  </div>
+                </div>
+                <div className="hero-right">
+                  <HeroPlanet accent={accent} />
+                </div>
               </motion.div>
+
+              <div className="stats-row" style={{ marginTop: "clamp(32px, 5vh, 64px)" }}>
+                {[
+                  { icon: "element-3", val: "5", label: "Modules", isCounter: true },
+                  { icon: "math", val: "Real", label: "Math" },
+                  { icon: "monitor", val: "3D", label: "Interactive" },
+                  { icon: "cpu", val: "Live", label: "AI Powered" },
+                ].map((s) => (
+                  <motion.div key={s.label} className="stat-card" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }}>
+                    <div className="stat-icon"><Icon name={s.icon} size={22} /></div>
+                    <div className="stat-val">{s.val}</div>
+                    <div className="stat-label">{s.label}</div>
+                  </motion.div>
+                ))}
+              </div>
 
               <motion.div
                 animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
@@ -173,7 +207,6 @@ export default function Page() {
               </motion.div>
             </section>
 
-            {/* MODULE HUB */}
             <section id="modules" style={{ padding: "clamp(40px, 8vh, 90px) 0 clamp(80px, 14vh, 160px)" }}>
               <div style={container}>
                 <Reveal>
@@ -188,14 +221,13 @@ export default function Page() {
                 </Reveal>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 22 }}>
                   {MODULES.map((m, i) => (
-                    <ModuleCapsule key={m.id} module={m} index={i} onLaunch={launch} onHover={setHoverAccent} />
+                    <ModuleCapsule key={m.id} module={m} index={i} onLaunch={launch} onHover={setHoverAccent} visited={visited.includes(m.id)} />
                   ))}
                 </div>
               </div>
             </section>
 
-            {/* ABOUT */}
-            <section style={{ padding: "0 0 clamp(80px, 14vh, 160px)" }}>
+            <section id="about" style={{ padding: "0 0 clamp(80px, 14vh, 160px)" }}>
               <div style={container}>
                 <Reveal>
                   <div className="glass" style={{ padding: "clamp(28px, 5vw, 48px)" }}>
@@ -218,7 +250,6 @@ export default function Page() {
               </div>
             </section>
 
-            {/* FOOTER */}
             <footer style={{ padding: "40px 0 120px", textAlign: "center" }}>
               <div style={container}>
                 <Reveal>

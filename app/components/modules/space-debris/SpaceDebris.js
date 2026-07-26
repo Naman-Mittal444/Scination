@@ -143,7 +143,7 @@ export default function SpaceDebris() {
           </Canvas>
 
           {/* Fullscreen button */}
-          <button className="sd-fullscreen-btn" onClick={toggleFullscreen} title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
+          <button className="sd-fullscreen-btn" onClick={toggleFullscreen} aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"} title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
             {isFullscreen ? (
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M5 1v3H1M11 1v3h4M1 11h3v4M15 11h-3v4" />

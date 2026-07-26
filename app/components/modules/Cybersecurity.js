@@ -6,6 +6,7 @@ import ModuleShell from "./ModuleShell";
 import { MODULE_BY_ID } from "../../lib/modules";
 import { emitDebug } from "../DebugPanel";
 import { CyberHowItWorks } from "./content/CyberContent";
+import Icon from "../Icon";
 
 /* ── helpers ──────────────────────────────────────────────── */
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -444,7 +445,7 @@ export default function Cybersecurity({ reason }) {
       {/* Top Status Bar */}
       <div className="cyber-topbar">
         <div className="cyber-brand">
-          <div className="cyber-brand-logo">🛡️</div>
+          <div className="cyber-brand-logo"><Icon name="shield-security" size={28} /></div>
           <div>
             <h3 style={{ fontSize: 17, fontWeight: 700, letterSpacing: "0.5px" }}>CIPHER<span className="accent-text">{"//"}</span>LAB</h3>
             <div className="mono" style={{ fontSize: 10, color: "var(--ink-dim)", letterSpacing: "1.5px" }}>CYBERSECURITY · DATA PRIVACY CONTROL CENTER</div>
@@ -464,7 +465,7 @@ export default function Cybersecurity({ reason }) {
         {/* ── PASSWORD ENTROPY ENGINE ── */}
         <div className="cyber-panel cyber-col-4">
           <div className="cyber-panel-head">
-            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}>🔑 Password Entropy Engine</span>
+            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}><Icon name="key-square" size={16} style={{ marginRight: 6 }} /> Password Entropy Engine</span>
             <span className="mono" style={{ fontSize: 10, color: "var(--ink-dim)", letterSpacing: "1.5px" }}>E = L · log₂(R)</span>
           </div>
           <label className="cyber-field-label">Test password</label>
@@ -498,7 +499,7 @@ export default function Cybersecurity({ reason }) {
         {/* ── BRUTE-FORCE ATTACK SIMULATION ── */}
         <div className="cyber-panel cyber-col-8">
           <div className="cyber-panel-head">
-            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}>💥 Brute-Force Attack Simulation</span>
+            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}><Icon name="flash" size={16} style={{ marginRight: 6 }} /> Brute-Force Attack Simulation</span>
             <span className="mono" style={{ fontSize: 10, color: "var(--ink-dim)", letterSpacing: "1.5px" }}>LIVE PENETRATION TEST</span>
           </div>
           <div className="cyber-readout-row">
@@ -535,7 +536,7 @@ export default function Cybersecurity({ reason }) {
         {/* ── ENCRYPTION PIPELINE ── */}
         <div className="cyber-panel cyber-col-6">
           <div className="cyber-panel-head">
-            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}>🔐 Encryption Pipeline</span>
+            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}><Icon name="shield-lock" size={16} style={{ marginRight: 6 }} /> Encryption Pipeline</span>
             <span className="mono" style={{ fontSize: 10, color: "var(--ink-dim)", letterSpacing: "1.5px" }}>CAESAR → XOR</span>
           </div>
           <label className="cyber-field-label">Plaintext</label>
@@ -567,7 +568,7 @@ export default function Cybersecurity({ reason }) {
         {/* ── SECURE LOGIN + MFA ── */}
         <div className="cyber-panel cyber-col-3">
           <div className="cyber-panel-head">
-            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}>🔓 Secure Login · MFA</span>
+            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}><Icon name="unlock" size={16} style={{ marginRight: 6 }} /> Secure Login · MFA</span>
           </div>
           <label className="cyber-field-label">Password</label>
           <input className="cyber-input" type="password" value={loginPw}
@@ -611,7 +612,7 @@ export default function Cybersecurity({ reason }) {
         {/* ── THREAT DASHBOARD ── */}
         <div className="cyber-panel cyber-col-3">
           <div className="cyber-panel-head">
-            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}>📡 Threat Dashboard</span>
+            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.8px" }}><Icon name="wifi" size={16} style={{ marginRight: 6 }} /> Threat Dashboard</span>
             <span className="mono" style={{ fontSize: 10, color: "var(--ink-dim)", letterSpacing: "1.5px" }}>REAL-TIME</span>
           </div>
           <div className="cyber-dash-grid">

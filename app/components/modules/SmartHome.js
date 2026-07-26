@@ -7,6 +7,7 @@ import { MODULE_BY_ID } from "../../lib/modules";
 import { DeviceProvider, useDevices, calcEnergyW } from "./smarthome/DeviceContext";
 import { parseIntent, ROOMS } from "./smarthome/intentEngine";
 import { SmartHomeHowItWorks } from "./content/SmartHomeContent";
+import Icon from "../Icon";
 
 const HOW_IT_WORKS = <SmartHomeHowItWorks />;
 
@@ -37,7 +38,9 @@ function DeviceCard({ icon, name, active, accent, children }) {
   return (
     <motion.div className="sh-device-card" whileHover={{ scale: 1.02, y: -3 }} style={{ "--dev-accent": accent }}>
       <div className="sh-device-header">
-        <span className="sh-device-icon">{icon}</span>
+        <span className="sh-device-icon" style={{ display: "flex", alignItems: "center" }}>
+          {typeof icon === "string" ? icon : icon}
+        </span>
         <span className="sh-device-name">{name}</span>
         <span className={`sh-device-status ${active ? "on" : "off"}`}><span className="sh-status-dot" /> {active ? "ON" : "OFF"}</span>
       </div>
@@ -370,7 +373,7 @@ function EnergyGraph({ history }) {
   const maxW = Math.max(...history.map((h) => h.w), 1);
   return (
     <div className="sh-energy-graph glass">
-      <div className="sh-section-title" style={{ marginBottom: 10 }}><span>&#x26A1;</span> Energy History</div>
+      <div className="sh-section-title" style={{ marginBottom: 10 }}><span><Icon name="flash-1" size={18} /></span> Energy History</div>
       <div className="sh-energy-bars">
         {history.map((h, i) => (
           <div key={i} className="sh-energy-bar-col">
@@ -394,14 +397,14 @@ function EnergyGraph({ history }) {
 function ActivityLog({ logs }) {
   if (!logs || logs.length === 0) return (
     <div className="sh-activity-log glass">
-      <div className="sh-section-title"><span>&#x1F4CB;</span> Activity Log</div>
+      <div className="sh-section-title"><span><Icon name="element-3" size={18} /></span> Activity Log</div>
       <div className="sh-log-empty">No activity yet</div>
     </div>
   );
 
   return (
     <div className="sh-activity-log glass">
-      <div className="sh-section-title"><span>&#x1F4CB;</span> Activity Log</div>
+      <div className="sh-section-title"><span><Icon name="element-3" size={18} /></span> Activity Log</div>
       <div className="sh-log-list">
         {logs.slice(0, 12).map((l, i) => (
           <div key={i} className={`sh-log-entry sh-log-${l.type}`}>
@@ -429,7 +432,7 @@ function AlertsPanel({ alerts, onDismiss, onClear }) {
           <motion.div key={a.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
             className={`sh-alert sh-alert-${a.severity}`}>
             <span className="sh-alert-text">{a.msg}</span>
-            <button className="sh-alert-dismiss" onClick={() => onDismiss(a.id)}>&#x2715;</button>
+            <button className="sh-alert-dismiss" onClick={() => onDismiss(a.id)} aria-label="Dismiss alert">&#x2715;</button>
           </motion.div>
         ))}
       </AnimatePresence>
@@ -446,10 +449,10 @@ function CustomDeviceCard({ device, exec }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span className="mono" style={{ fontSize: 11 }}>{room?.icon} {room?.name || device.room}</span>
         <div style={{ display: "flex", gap: 6 }}>
-          <button className="sh-toggle" onClick={() => exec("toggle_device", device.id)}>
+          <button className="sh-toggle" onClick={() => exec("toggle_device", device.id)} aria-label={`Toggle ${device.name}`}>
             <motion.div animate={{ x: device.on ? 20 : 0 }} className="sh-toggle-knob" />
           </button>
-          <button className="sh-mini-btn" onClick={() => exec("remove_device", device.id)} style={{ color: "var(--pop-pink)", fontSize: 12, padding: "4px 8px" }}>&#x2715;</button>
+          <button className="sh-mini-btn" onClick={() => exec("remove_device", device.id)} aria-label={`Remove ${device.name}`} style={{ color: "var(--pop-pink)", fontSize: 12, padding: "4px 8px" }}>&#x2715;</button>
         </div>
       </div>
     </DeviceCard>
@@ -513,34 +516,34 @@ function SmartHomeInner({ onNavigate }) {
       {/* Dashboard Stats */}
       <div className="sh-stats-row">
         <div className="sh-stat-card">
-          <div className="sh-stat-icon" style={{ color: energyPct > 60 ? "var(--pop-pink)" : "var(--pop-cyan)" }}>&#x26A1;</div>
+          <div className="sh-stat-icon" style={{ color: energyPct > 60 ? "var(--pop-pink)" : "var(--pop-cyan)" }}><Icon name="flash-1" size={20} /></div>
           <div className="sh-stat-val mono">{Math.round(energy)}W</div>
           <div className="sh-stat-label">Energy</div>
         </div>
         <div className="sh-stat-card">
-          <div className="sh-stat-icon">&#x1F4F1;</div>
+          <div className="sh-stat-icon"><Icon name="monitor" size={20} /></div>
           <div className="sh-stat-val mono">{activeDevices}/{totalDevices}</div>
           <div className="sh-stat-label">Active</div>
         </div>
         <div className="sh-stat-card">
-          <div className="sh-stat-icon">&#x1F50B;</div>
+          <div className="sh-stat-icon"><Icon name="flash" size={20} /></div>
           <div className="sh-stat-val mono">{efficiency}%</div>
           <div className="sh-stat-label">Efficiency</div>
         </div>
         <div className="sh-stat-card">
-          <div className="sh-stat-icon">{state.doorLocked ? "\uD83D\uDD12" : "\uD83D\uDD13"}</div>
+          <div className="sh-stat-icon"><Icon name={state.doorLocked ? "lock-1" : "unlock"} size={20} /></div>
           <div className="sh-stat-val mono">{state.doorLocked ? "Armed" : "Open"}</div>
           <div className="sh-stat-label">Security</div>
         </div>
       </div>
 
       {/* Scene Presets */}
-      <div className="sh-section-title"><span>&#x26A1;</span> Quick Scenes</div>
+      <div className="sh-section-title"><span><Icon name="flash-1" size={18} /></span> Quick Scenes</div>
       <SceneBar exec={exec} activeScene={state.activeScene} />
 
       {/* Voice */}
       <div style={{ marginTop: 18 }}>
-        <div className="sh-section-title"><span>&#x1F399;</span> Voice Control</div>
+        <div className="sh-section-title"><span><Icon name="microphone" size={18} /></span> Voice Control</div>
         <VoicePanel exec={exec} state={state} />
       </div>
 
@@ -548,14 +551,14 @@ function SmartHomeInner({ onNavigate }) {
       <div className="sh-main-grid">
         <div className="sh-devices-col">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <div className="sh-section-title" style={{ marginBottom: 0 }}><span>&#x1F3E0;</span> Device Control</div>
+            <div className="sh-section-title" style={{ marginBottom: 0 }}><span><Icon name="home-wifi" size={18} /></span> Device Control</div>
             <button className="btn" style={{ fontSize: 12, padding: "6px 14px" }} onClick={() => setShowAddDevice(true)}>+ Add Device</button>
           </div>
 
-          <DeviceCard icon="&#x1F4A1;" name="Smart Lights" active={state.lightsOn} accent="#ffd93d">
+          <DeviceCard icon={<Icon name="lamp-1" size={20} />} name="Smart Lights" active={state.lightsOn} accent="#ffd93d">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
               <span className="mono" style={{ fontSize: 12 }}>Brightness: {state.brightness}%</span>
-              <button className="sh-toggle" onClick={() => exec(state.lightsOn ? "lights_off" : "lights_on")}>
+              <button className="sh-toggle" onClick={() => exec(state.lightsOn ? "lights_off" : "lights_on")} aria-label={state.lightsOn ? "Turn off lights" : "Turn on lights"}>
                 <motion.div animate={{ x: state.lightsOn ? 20 : 0 }} className="sh-toggle-knob" />
               </button>
             </div>
@@ -564,24 +567,24 @@ function SmartHomeInner({ onNavigate }) {
               onChange={(e) => exec("brightness_set", parseInt(e.target.value))} />
           </DeviceCard>
 
-          <DeviceCard icon="&#x2744;&#xFE0F;" name="Air Conditioner" active={state.acOn} accent="#37e2d5">
+          <DeviceCard icon={<Icon name="temperature" size={20} />} name="Air Conditioner" active={state.acOn} accent="#37e2d5">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
               <span className="mono" style={{ fontSize: 12 }}>Temp: {state.temperature}&#xB0;C</span>
-              <button className="sh-toggle" onClick={() => exec(state.acOn ? "ac_off" : "ac_on")}>
+              <button className="sh-toggle" onClick={() => exec(state.acOn ? "ac_off" : "ac_on")} aria-label={state.acOn ? "Turn off AC" : "Turn on AC"}>
                 <motion.div animate={{ x: state.acOn ? 20 : 0 }} className="sh-toggle-knob" />
               </button>
             </div>
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <button className="sh-mini-btn" onClick={() => exec("temp_down")}>-</button>
+              <button className="sh-mini-btn" onClick={() => exec("temp_down")} aria-label="Decrease temperature">-</button>
               <div className="sh-temp-display mono">{state.temperature}&#xB0;</div>
-              <button className="sh-mini-btn" onClick={() => exec("temp_up")}>+</button>
+              <button className="sh-mini-btn" onClick={() => exec("temp_up")} aria-label="Increase temperature">+</button>
             </div>
           </DeviceCard>
 
-          <DeviceCard icon="&#x1F300;" name="Ceiling Fan" active={state.fanOn} accent="#a855f7">
+          <DeviceCard icon={<Icon name="rotate-right" size={20} />} name="Ceiling Fan" active={state.fanOn} accent="#a855f7">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
               <span className="mono" style={{ fontSize: 12 }}>Speed: {state.fanSpeed}/5</span>
-              <button className="sh-toggle" onClick={() => exec(state.fanOn ? "fan_off" : "fan_on")}>
+              <button className="sh-toggle" onClick={() => exec(state.fanOn ? "fan_off" : "fan_on")} aria-label={state.fanOn ? "Turn off fan" : "Turn on fan"}>
                 <motion.div animate={{ x: state.fanOn ? 20 : 0 }} className="sh-toggle-knob" />
               </button>
             </div>
@@ -593,10 +596,10 @@ function SmartHomeInner({ onNavigate }) {
             </div>
           </DeviceCard>
 
-          <DeviceCard icon="&#x1F4FA;" name="Smart TV" active={state.tvOn} accent="#4d7cff">
+          <DeviceCard icon={<Icon name="monitor" size={20} />} name="Smart TV" active={state.tvOn} accent="#4d7cff">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
               <span className="mono" style={{ fontSize: 12 }}>Volume: {state.tvVolume}%</span>
-              <button className="sh-toggle" onClick={() => exec(state.tvOn ? "tv_off" : "tv_on")}>
+              <button className="sh-toggle" onClick={() => exec(state.tvOn ? "tv_off" : "tv_on")} aria-label={state.tvOn ? "Turn off TV" : "Turn on TV"}>
                 <motion.div animate={{ x: state.tvOn ? 20 : 0 }} className="sh-toggle-knob" />
               </button>
             </div>
@@ -605,10 +608,10 @@ function SmartHomeInner({ onNavigate }) {
               onChange={(e) => exec("vol_set", parseInt(e.target.value))} />
           </DeviceCard>
 
-          <DeviceCard icon="&#x1F510;" name="Smart Lock" active={state.doorLocked} accent="#ff4d9d">
+          <DeviceCard icon={<Icon name="lock-1" size={20} />} name="Smart Lock" active={state.doorLocked} accent="#ff4d9d">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span className="mono" style={{ fontSize: 12 }}>{state.doorLocked ? "Secured" : "Unlocked"}</span>
-              <button className="sh-toggle" onClick={() => exec(state.doorLocked ? "unlock" : "lock")}>
+              <button className="sh-toggle" onClick={() => exec(state.doorLocked ? "unlock" : "lock")} aria-label={state.doorLocked ? "Unlock door" : "Lock door"}>
                 <motion.div animate={{ x: state.doorLocked ? 20 : 0 }} className="sh-toggle-knob" />
               </button>
             </div>
@@ -621,10 +624,10 @@ function SmartHomeInner({ onNavigate }) {
         </div>
 
         <div className="sh-right-col">
-          <div className="sh-section-title"><span>&#x1F916;</span> AURA AI</div>
+          <div className="sh-section-title"><span><Icon name="cpu" size={18} /></span> AURA AI</div>
           <AuraChat exec={exec} state={state} />
           <div style={{ marginTop: 18 }}>
-            <div className="sh-section-title"><span>&#x1F510;</span> Biometrics</div>
+            <div className="sh-section-title"><span><Icon name="lock-1" size={18} /></span> Biometrics</div>
             <Biometrics exec={exec} />
           </div>
         </div>
