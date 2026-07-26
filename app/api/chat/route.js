@@ -195,7 +195,10 @@ function parseNavMarker(reply) {
 
 async function callGemini(message, systemPrompt) {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey) {
+    console.error("[chat] GEMINI_API_KEY is missing from environment");
+    return null;
+  }
 
   try {
     const res = await fetch(
@@ -214,15 +217,20 @@ async function callGemini(message, systemPrompt) {
     if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
       return data.candidates[0].content.parts[0].text;
     }
+    console.error("[chat] Gemini returned no candidates. Status:", res.status, "Body:", JSON.stringify(data).slice(0, 500));
     return null;
-  } catch {
+  } catch (err) {
+    console.error("[chat] Gemini fetch error:", err.message);
     return null;
   }
 }
 
 async function callGroq(message, systemPrompt) {
   const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey) {
+    console.error("[chat] GROQ_API_KEY is missing from environment");
+    return null;
+  }
 
   try {
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -245,8 +253,10 @@ async function callGroq(message, systemPrompt) {
     if (data.choices?.[0]?.message?.content) {
       return data.choices[0].message.content;
     }
+    console.error("[chat] Groq returned no choices. Status:", res.status, "Body:", JSON.stringify(data).slice(0, 500));
     return null;
-  } catch {
+  } catch (err) {
+    console.error("[chat] Groq fetch error:", err.message);
     return null;
   }
 }
@@ -257,6 +267,10 @@ export async function POST(request) {
     if (!message || typeof message !== "string") {
       return NextResponse.json({ error: "Invalid message" }, { status: 400 });
     }
+
+    const hasGeminiKey = !!process.env.GEMINI_API_KEY;
+    const hasGroqKey = !!process.env.GROQ_API_KEY;
+    console.log("[chat] Request:", message.slice(0, 80), "| Keys — Gemini:", hasGeminiKey, "Groq:", hasGroqKey);
 
     // Developer cheat: "enforce" prefix bypasses project restrictions
     const isEnforce = message.toLowerCase().startsWith("enforce");
@@ -277,6 +291,7 @@ export async function POST(request) {
     }
 
     if (!reply) {
+      console.error("[chat] Both Gemini and Groq failed. Keys present — Gemini:", hasGeminiKey, "Groq:", hasGroqKey);
       reply = "I'm the AI Future Lab assistant! Ask me about our 5 modules, Happy English School, or the tech stack.";
       model = "fallback";
     }
@@ -292,6 +307,15 @@ export async function POST(request) {
 
     return NextResponse.json({ reply: finalReply, model, action: finalAction });
   } catch (err) {
+    console.error("[chat] POST error:", err.message);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
+}
+
+export async function GET() {
+  return NextResponse.json({
+    geminiKey: !!process.env.GEMINI_API_KEY,
+    groqKey: !!process.env.GROQ_API_KEY,
+    nodeEnv: process.env.NODE_ENV,
+  });
 }
