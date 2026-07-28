@@ -112,6 +112,26 @@ export const MODULES = [
       ],
     },
   },
+  {
+    id: "water-tank",
+    index: "06",
+    title: "Water Tank System",
+    tagline: "Real-time IoT water level monitoring with ultrasonic sensing",
+    blurb:
+      "An HC-SR04 ultrasonic sensor measures water distance, a Node.js bridge streams it to this dashboard in real time — with a 3D glass tank, motor control, overflow alerts, and a live history graph.",
+    accent: "#38bdf8",
+    accentSoft: "#0c2d48",
+    icon: "water",
+    tags: ["IoT", "Arduino", "Real-time"],
+    math: {
+      title: "Water level calculation",
+      formula: "Level% = ((H − d) / H) × 100",
+      where: [
+        ["H", "total tank height (cm)"],
+        ["d", "distance measured by sensor (cm)"],
+      ],
+    },
+  },
 ];
 
 export const MODULE_BY_ID = Object.fromEntries(MODULES.map((m) => [m.id, m]));

@@ -31,6 +31,7 @@ const MODULE_COMPONENTS = {
   traffic: dynamic(() => import("./components/modules/Traffic"), { ssr: false }),
   space: dynamic(() => import("./components/modules/space-debris/SpaceDebris"), { ssr: false }),
   quantum: dynamic(() => import("./components/modules/Quantum"), { ssr: false }),
+  "water-tank": dynamic(() => import("./components/modules/WaterTank"), { ssr: false }),
 };
 
 const container = {
@@ -241,7 +242,7 @@ export default function Page() {
                       from the homes we live in to the orbits above us — through hands-on, mathematically-grounded simulations.
                     </p>
                     <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 22 }}>
-                      {["Next.js", "Three.js / R3F", "Framer Motion", "Real math", "5 modules"].map((t) => (
+                      {["Next.js", "Three.js / R3F", "Framer Motion", "Real math", "6 modules"].map((t) => (
                         <span key={t} className="chip">{t}</span>
                       ))}
                     </div>

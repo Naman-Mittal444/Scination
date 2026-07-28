@@ -13,7 +13,7 @@ const SUGGESTIONS = [
   "How does Space Debris tracking work?",
   "What school is this from?",
   "Explain the Quantum module",
-  "What tech stack is used?",
+  "Tell me about the Water Tank module",
 ];
 
 export default function ChatBot({ onNavigate, activeModule }) {

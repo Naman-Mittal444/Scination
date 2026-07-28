@@ -165,6 +165,11 @@ const ICONS = {
       <path d="M10 13V11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11V13" />
     </>
   ),
+  "water": (
+    <>
+      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+    </>
+  ),
 };
 
 export default function Icon({ name, size = 24, color = "currentColor", className = "", style = {} }) {

@@ -14,7 +14,7 @@ import { animate, stagger } from "animejs";
    --------------------------------------------------------------------------- */
 
 const SHORTCUTS = [
-  { keys: ["1", "2", "3", "4", "5"], label: "Launch module" },
+  { keys: ["1", "2", "3", "4", "5", "6"], label: "Launch module" },
   { keys: ["Esc"], label: "Return to hub" },
   { keys: ["?"], label: "Show shortcuts" },
   { keys: ["/"], label: "Focus AI chat" },
@@ -66,9 +66,9 @@ export default function KeyboardShortcuts({ onLaunch, onReturn, active }) {
       return;
     }
 
-    // 1-5 → launch module
-    if (["1", "2", "3", "4", "5"].includes(key) && !active && !open) {
-      const moduleIds = ["smart-home", "cybersecurity", "traffic", "space", "quantum"];
+    // 1-6 → launch module
+    if (["1", "2", "3", "4", "5", "6"].includes(key) && !active && !open) {
+      const moduleIds = ["smart-home", "cybersecurity", "traffic", "space", "quantum", "water-tank"];
       const idx = parseInt(key) - 1;
       if (idx < moduleIds.length) {
         onLaunch(moduleIds[idx]);

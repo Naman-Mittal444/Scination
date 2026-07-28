@@ -27,13 +27,14 @@ RULES:
 - If the question is unrelated to the project or school, give a brief honest answer without deflecting back to the project.
 
 === PROJECT: AI FUTURE LAB ===
-React/Next.js portfolio with Three.js and Framer Motion, 5 interactive modules for SciNaTiON 6.0.
+React/Next.js portfolio with Three.js and Framer Motion, 6 interactive modules for SciNaTiON 6.0.
 MODULES:
 1. Smart Home — IoT dashboard with adaptive lighting (L_out = max(0, μ × (I_L − E_x))), voice control, security interlock, AURA AI chatbot, biometrics
 2. Cybersecurity — Password entropy analyzer (E = L × log(R)/log(2)), Caesar + XOR ciphers, brute-force visualization, threat dashboard
 3. Traffic Control — Adaptive signal timing (P_n = (α·Q_n) + (β·(1/V_avg))), CCTV canvas with scanlines and bounding boxes, satellite canvas, per-lane lights
 4. Space Debris — 3D Earth with procedural textures, TLE-derived orbits from 4 real sources, proximity collision detection, orbit bands (LEO/MEO/GEO), fullscreen dashboard
 5. Quantum Computing — 3D Bloch sphere simulator (embedded, MIT licensed from bits-and-electrons), full learning hub with qubit fundamentals, Bloch sphere visualization, circuit builder (H/X/Z/S/T/CNOT gates), quantum games (maze explorer, pattern memory, quantum coin flip, entanglement lab), entanglement deep dive (EPR, Bell's theorem, Nobel 2022), quantum computing history timeline (1980–2024)
+6. Water Tank System — Real-time IoT water level monitoring with HC-SR04 ultrasonic sensor, 3D glass tank visualization (React Three Fiber), motor control via relay, Node.js serial bridge (COM3 @ 9600 baud), overflow/low-water alerts, live history graph, demo/live mode toggle
 STACK: Next.js 14, React 18, Three.js, @react-three/fiber, @react-three/drei, Framer Motion, Canvas 2D
 
 === HAPPY ENGLISH SCHOOL (HES) — COMPLETE INFO (from hes.edu.in) ===
@@ -148,6 +149,7 @@ When the user asks to OPEN, SEE, SHOW, LAUNCH, or EXPLORE a specific module (not
 - <<NAV:traffic>> for Traffic Control (also: cars, intersection, signals, road)
 - <<NAV:space>> for Space Debris (also: debris, orbit, satellites, earth)
 - <<NAV:quantum>> for Quantum Computing (also: qubits, bloch, quantum)
+- <<NAV:water-tank>> for Water Tank System (also: water, tank, sensor, ultrasonic, arduino, pump, motor)
 
 When starting a tour or guide request, use <<NAVTOUR:id>> instead.
 
@@ -162,6 +164,7 @@ const MODULE_KEYWORDS = {
   traffic: ["traffic", "cars", "intersection", "signals", "road", "cctv", "satellite", "junction"],
   space: ["space", "debris", "orbit", "satellites", "earth", "cosmos", "fenyun", "iridium"],
   quantum: ["quantum", "qubits", "qubit", "bloch", "hadamard", "pauli", "cnot", "superposition"],
+  "water-tank": ["water", "tank", "water tank", "sensor", "ultrasonic", "hc-sr04", "arduino", "pump", "motor", "water level"],
 };
 
 function detectModuleIntent(text) {
